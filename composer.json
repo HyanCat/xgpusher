@@ -1,0 +1,49 @@
+{
+    "name": "elfsundae/xgpusher",
+    "type": "library",
+    "description": "Xinge Pusher",
+    "keywords": ["xinge", "push", "notification", "tencent"],
+    "homepage": "https://github.com/ElfSundae/xgpusher",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Elf Sundae",
+            "email": "elf.sundae@gmail.com",
+            "homepage": "https://0x123.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.4",
+        "elfsundae/xgpush": "~1.1.8"
+    },
+    "require-dev": {
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "~5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "ElfSundae\\XgPush\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ElfSundae\\XgPush\\Test\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "ElfSundae\\XgPush\\PusherServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
