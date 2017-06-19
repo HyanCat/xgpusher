@@ -1,6 +1,6 @@
 <?php
 
-namespace ElfSundae\XgPusher\Test;
+namespace ElfSundae\XgPush\Test;
 
 class ExampleTest extends TestCase
 {
