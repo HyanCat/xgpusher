@@ -2,6 +2,8 @@
 
 namespace ElfSundae\XgPush;
 
+use Illuminate\Support\Arr;
+
 class Pusher
 {
     /**
@@ -174,7 +176,7 @@ class Pusher
     public function code($response)
     {
         if (is_array($response)) {
-            return array_get($response, 'ret_code');
+            return Arr::get($response, 'ret_code');
         }
     }
 
@@ -187,7 +189,7 @@ class Pusher
     public function message($response)
     {
         if (is_array($response)) {
-            return array_get($response, 'err_msg');
+            return Arr::get($response, 'err_msg');
         }
     }
 
@@ -202,7 +204,7 @@ class Pusher
     public function result($response, $key = null, $default = null)
     {
         if (is_array($response)) {
-            return array_get($response, $key ? "result.{$key}" : 'result', $default);
+            return Arr::get($response, $key ? "result.{$key}" : 'result', $default);
         }
     }
 
