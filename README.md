@@ -25,7 +25,7 @@ ElfSundae\XgPush\PusherServiceProvider::class,
 
 Add "xgpush" configuration in `config/services.php` of your app:
 
-```sh
+```php
 'xgpush' => [
     'key' => env('XGPUSH_KEY'),
     'secret' => env('XGPUSH_SECRET'),
