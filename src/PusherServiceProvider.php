@@ -21,7 +21,7 @@ class PusherServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('xgpusher', function ($app) {
-            $config = $app['config']['services.xgpush'];
+            $config = $app['config']->get('services.xgpush');
 
             return (new Pusher($config['key'], $config['secret']))
                 ->setEnvironment($config['environment'])
