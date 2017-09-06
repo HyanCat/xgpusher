@@ -3,6 +3,7 @@
 namespace ElfSundae\XgPush\Test;
 
 use Mockery as m;
+use ElfSundae\XgPush\Pusher;
 use PHPUnit\Framework\TestCase;
 
 class ExampleTest extends TestCase
@@ -12,8 +13,8 @@ class ExampleTest extends TestCase
         m::close();
     }
 
-    public function testExample()
+    public function testInstantiation()
     {
-        $this->assertTrue(true);
+        $this->assertInstanceOf(Pusher::class, new Pusher('key', 'secret'));
     }
 }
