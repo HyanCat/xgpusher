@@ -3,6 +3,7 @@
 namespace ElfSundae\XgPush;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class Pusher
 {
@@ -231,7 +232,7 @@ class Pusher
      */
     public function accountForUser($user)
     {
-        if ($this->accountPrefix && is_string($user) && starts_with($user, $this->accountPrefix)) {
+        if ($this->accountPrefix && Str::startsWith($user, $this->accountPrefix)) {
             return $user;
         }
 
