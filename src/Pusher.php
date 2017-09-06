@@ -350,13 +350,12 @@ class Pusher
      * @warning 用户数限制 100 个。
      *
      * @param  \ElfSundae\XgPush\Message|\ElfSundae\XgPush\MessageIOS  $message
-     * @param  mixed  $users
+     * @param  mixed|array  $users
      * @return array
      */
     public function toUser($message, $users)
     {
-        $users = $this->getParameterAsArray(func_get_args(), 1);
-        $accounts = $this->accountsForUsers($users);
+        $accounts = $this->accountsForUsers((array) $users);
 
         if (count($accounts) == 1) {
             return $this->xinge->PushSingleAccount(0, $accounts[0], $message, $this->environment);
@@ -395,15 +394,12 @@ class Pusher
      * @warning 用户数限制 1000 个。
      *
      * @param  int|string  $pushId
-     * @param  mixed $users
+     * @param  mixed|array  $users
      * @return array
      */
     public function batchToUsers($pushId, $users)
     {
-        return $this->xinge->PushAccountListMultiple(
-            $pushId,
-            $this->accountsForUsers($this->getParameterAsArray(func_get_args(), 1))
-        );
+        return $this->xinge->PushAccountListMultiple($pushId, $this->accountsForUsers((array) $users));
     }
 
     /**
@@ -412,28 +408,23 @@ class Pusher
      * @warning 设备数限制 1000 个。
      *
      * @param  int|string  $pushId
-     * @param  mixed  $deviceTokens
+     * @param  string|string[]  $deviceTokens
      * @return array
      */
     public function batchToDevices($pushId, $deviceTokens)
     {
-        return $this->xinge->PushDeviceListMultiple(
-            $pushId,
-            $this->getParameterAsArray(func_get_args(), 1)
-        );
+        return $this->xinge->PushDeviceListMultiple($pushId, (array) $deviceTokens);
     }
 
     /**
      * Query group pushing status.
      *
-     * @param  mixed  $pushIds
+     * @param  string|string[]  $pushIds
      * @return array
      */
     public function queryPushStatus($pushIds)
     {
-        $pushIds = $this->getParameterAsArray(func_get_args());
-
-        $list = $this->result($this->xinge->QueryPushStatus($pushIds), 'list', []);
+        $list = $this->result($this->xinge->QueryPushStatus((array) $pushIds), 'list', []);
 
         return array_combine(array_pluck($list, 'push_id'), $list);
     }
@@ -575,30 +566,25 @@ class Pusher
      * Add tags for the given device token.
      *
      * @param  string  $deviceToken
-     * @param  mixed  $tags
+     * @param  string|string[]  $tags
      * @return bool
      */
     public function addTagsForDeviceToken($deviceToken, $tags)
     {
-        return $this->addTags(
-            $this->createTagTokenPairs($this->getParameterAsArray(func_get_args(), 1), $deviceToken)
-        );
+        return $this->addTags($this->createTagTokenPairs((array) $tags, $deviceToken));
     }
 
     /**
      * Add tags for the given user.
      *
      * @param  mixed  $user
-     * @param  mixed  $tags
+     * @param  string|array  $tags
      * @return bool
      */
     public function addTagsForUser($user, $tags)
     {
         return $this->addTags(
-            $this->createTagTokenPairs(
-                $this->getParameterAsArray(func_get_args(), 1),
-                $this->queryDeviceTokensForUser($user)
-            )
+            $this->createTagTokenPairs((array) $tags, $this->queryDeviceTokensForUser($user))
         );
     }
 
@@ -619,13 +605,13 @@ class Pusher
      * Remove tags for the given device token.
      *
      * @param  string  $deviceToken
-     * @param  mixed  $tags
+     * @param  string|string[]  $tags
      * @return bool
      */
     public function removeTagsForDeviceToken($deviceToken, $tags)
     {
         return $this->removeTags(
-            $this->createTagTokenPairs($this->getParameterAsArray(func_get_args(), 1), $deviceToken)
+            $this->createTagTokenPairs((array) $tags, $deviceToken)
         );
     }
 
@@ -633,16 +619,13 @@ class Pusher
      * Remove tags for the given user.
      *
      * @param  mixed  $user
-     * @param  mixed  $tags
+     * @param  string|string[]  $tags
      * @return bool
      */
     public function removeTagsForUser($user, $tags)
     {
         return $this->removeTags(
-            $this->createTagTokenPairs(
-                $this->getParameterAsArray(func_get_args(), 1),
-                $this->queryDeviceTokensForUser($user)
-            )
+            $this->createTagTokenPairs((array) $tags, $this->queryDeviceTokensForUser($user))
         );
     }
 
@@ -650,12 +633,12 @@ class Pusher
      * Set tags for the given device token.
      *
      * @param  string  $deviceToken
-     * @param  mixed  $tags
+     * @param  string|string[]  $tags
      * @return bool
      */
     public function setTagsForDeviceToken($deviceToken, $tags)
     {
-        $tags = $this->getParameterAsArray(func_get_args(), 1);
+        $tags = (array) $tags;
         $oldTags = $this->queryTagsForDeviceToken($deviceToken);
 
         $result = true;
@@ -675,12 +658,12 @@ class Pusher
      * Set tags for the given user.
      *
      * @param  mixed  $user
-     * @param  mixed  $tags
+     * @param  string|string[]  $tags
      * @return bool
      */
     public function setTagsForUser($user, $tags)
     {
-        $tags = $this->getParameterAsArray(func_get_args(), 1);
+        $tags = (array) $tags;
         $oldTags = $this->queryTagsForUser($user, $tokens);
 
         $addTagTokenPairs = [];
@@ -707,18 +690,6 @@ class Pusher
         }
 
         return $result;
-    }
-
-    /**
-     * Get parameter as array.
-     *
-     * @param  array  $args
-     * @param  int $offset
-     * @return array
-     */
-    protected function getParameterAsArray(array $args, $offset = 0)
-    {
-        return is_array($args[$offset]) ? $args[$offset] : array_slice($args, $offset);
     }
 
     /**
