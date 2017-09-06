@@ -236,9 +236,9 @@ class Pusher
             return $user;
         }
 
-        if (is_object($user)) {
-            $user = $user->id;
-        } elseif (is_array($user)) {
+        if (method_exists($user, 'getKeyName')) {
+            $user = $user->getKeyName();
+        } elseif (is_array($user) && ! empty($user['id'])) {
             $user = $user['id'];
         }
 
