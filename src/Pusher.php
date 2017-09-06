@@ -27,7 +27,7 @@ class Pusher
      *
      * @var string
      */
-    protected $customKey;
+    protected $customKey = 'custom';
 
     /**
      * Xinge account prefix.
