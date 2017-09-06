@@ -30,7 +30,7 @@ Add "xgpush" configuration in `config/services.php` of your app:
     'key' => env('XGPUSH_KEY'),
     'secret' => env('XGPUSH_SECRET'),
     'environment' => env('XGPUSH_ENVIRONMENT', env('APP_ENV')),
-    'custom_key' => 'my',
+    'custom_key' => 'custom',
     'account_prefix' => 'user',
 ],
 ```
