@@ -38,10 +38,7 @@
         "laravel": {
             "providers": [
                 "ElfSundae\\XgPush\\PusherServiceProvider"
-            ],
-            "aliases": {
-                "XgPusher" : "ElfSundae\\XgPush\\Pusher"
-            }
+            ]
         }
     },
     "config": {

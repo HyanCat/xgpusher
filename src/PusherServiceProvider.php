@@ -20,16 +20,23 @@ class PusherServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('xgpusher', function ($app) {
+        $this->app->bind('xgpusher.ios', function ($app) {
             $config = $app['config']->get('services.xgpush');
 
-            return (new Pusher($config['key'], $config['secret']))
+            return (new Pusher($config['ios_key'], $config['ios_secret']))
                 ->setEnvironment($config['environment'])
                 ->setCustomKey($config['custom_key'])
                 ->setAccountPrefix($config['account_prefix']);
         });
 
-        $this->app->alias('xgpusher', Pusher::class);
+        $this->app->bind('xgpusher.android', function ($app) {
+            $config = $app['config']->get('services.xgpush');
+
+            return (new Pusher($config['android_key'], $config['android_secret']))
+                ->setEnvironment($config['environment'])
+                ->setCustomKey($config['custom_key'])
+                ->setAccountPrefix($config['account_prefix']);
+        });
     }
 
     /**
@@ -39,6 +46,6 @@ class PusherServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['xgpusher', Pusher::class];
+        return ['xgpusher.ios', 'xgpusher.android'];
     }
 }
